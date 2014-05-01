@@ -10,7 +10,7 @@ public class Response {
 	public static Response parseResponse(Request r) {
 		Response response = null;
 		if (r.getClass().equals(GetRequest.class)) {
-			response = new ResponseGet(r);
+			response = new ResponseGet((GetRequest)r);
 		}
 		
 		return response;
