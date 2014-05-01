@@ -54,4 +54,8 @@ public class Server {
 			}
 		}
 	}
+	
+	public String getPath() {
+		return this.path;
+	}
 }

@@ -40,6 +40,10 @@ public class ConnectionHandler implements Runnable {
 	    		server.logMessage(ErrorMessage501.getError());
 	    		output.write(ErrorMessage501.getError().getBytes());
 	    		output.flush();
+	    		Response resp = Response.parseResponse(r, this.server);
+	    		if (resp.getClass().equals(ResponseGet.class)) {
+	    			((ResponseGet)resp).getResource();
+	    		}
 	    	} catch (IOException e) {
 	    		// TODO Auto-generated catch block
 	    		e.printStackTrace();
