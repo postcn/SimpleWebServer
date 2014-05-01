@@ -1,5 +1,6 @@
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.InetAddress;
@@ -22,6 +23,13 @@ public class Server {
 			logMessage("Fatal error occurred when trying to create server socket");
 		}
 		logMessage("Success. Server socket running on port " + port);
+		if (path != null) {
+			this.path = path.replace(".", System.getProperty("user.dir"));
+		}
+		else {
+			this.path = System.getProperty("user.dir") +File.separator +"www";
+		}
+		logMessage("Server running with root directory " + this.path);
 		handleConnections();
 	}
 	

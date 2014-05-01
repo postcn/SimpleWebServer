@@ -11,7 +11,7 @@ public class GetRequest extends Request {
 
 	@Override
 	public String getFullHeader() {
-		return "GET " + resourcePath + " HTTP/1.1" + NEWLINE + super.getCommonHeader();
+		return "GET " + resourcePath + " HTTP/1.1" + Constants.NEWLINE + super.getCommonHeader();
 	}
 	
 }
