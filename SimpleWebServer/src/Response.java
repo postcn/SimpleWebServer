@@ -9,7 +9,7 @@ public class Response {
 	protected String Server;
 	protected int ContentLength;
 	protected String Connection;
-	protected String ContentType;
+	private String ContentType;
 	private String dataLoad;
 	
 	public static Response parseResponse(Request r) {
@@ -35,12 +35,17 @@ public class Response {
 	    return dateFormat.format(calendar.getTime());
 	}
 	
-	public void setDataLoad(String data) {
+	public void setContent(String data, String contentType) {
 		this.dataLoad = data;
 		this.ContentLength = dataLoad.length();
+		this.ContentType = contentType;
 	}
 	
-	public String getDataLoad() {
+	public String getContent() {
 		return this.dataLoad;
+	}
+
+	public String getContentType() {
+		return this.ContentType;
 	}
 }
