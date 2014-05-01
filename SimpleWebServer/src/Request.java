@@ -17,7 +17,7 @@ public class Request {
 		String typeLine = reader.readLine();
 		s.logMessage("Client sent type header: " + typeLine);
 		if (typeLine == null) {
-			throw new DetailException("Bad header line from client: no header");
+			throw new SocketClosedException("Bad header line from client: no header");
 		}
 		
 		Request r;
