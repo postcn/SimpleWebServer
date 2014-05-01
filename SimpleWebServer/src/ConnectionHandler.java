@@ -34,24 +34,24 @@ public class ConnectionHandler implements Runnable {
 	    BufferedOutputStream output = new BufferedOutputStream(out);
 	    Request r = null;
 	    while (! socket.isClosed()) {
-	    try {
-	    	r = Request.parseRequest(in, this.server);
-	    	server.logMessage(r.getFullHeader());
-	    	server.logMessage(ErrorMessage501.getError());
-			output.write(ErrorMessage501.getError().getBytes());
-			output.flush();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (DetailException e) {
-			server.logMessage(e.getMessage());
-		} catch (SocketClosedException e) {
-			server.logMessage(e.getMessage());
-			break;
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			server.logMessage(e.getMessage());
-		}
+	    	try {
+	    		r = Request.parseRequest(in, this.server);
+	    		server.logMessage(r.getFullHeader());
+	    		server.logMessage(ErrorMessage501.getError());
+	    		output.write(ErrorMessage501.getError().getBytes());
+	    		output.flush();
+	    	} catch (IOException e) {
+	    		// TODO Auto-generated catch block
+	    		e.printStackTrace();
+	    	} catch (DetailException e) {
+	    		server.logMessage(e.getMessage());
+	    	} catch (SocketClosedException e) {
+	    		server.logMessage(e.getMessage());
+	    		break;
+	    	} catch (Exception e) {
+	    		// TODO Auto-generated catch block
+	    		server.logMessage(e.getMessage());
+	    	}
 	    }
 	    try {
 			if (r != null && r.Close()) {
