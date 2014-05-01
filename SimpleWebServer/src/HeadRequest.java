@@ -1,4 +1,8 @@
 
-public class HeadRequest extends Request {
+public class HeadRequest extends GetRequest {
+
+	public HeadRequest(String firstHeader) {
+		super(firstHeader);
+	}
 
 }
