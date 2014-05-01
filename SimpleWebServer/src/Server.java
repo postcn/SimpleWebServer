@@ -37,7 +37,7 @@ public class Server {
 				Socket connect = this.socket.accept();
 				connect.setKeepAlive(true);
 				InetAddress client = connect.getInetAddress();
-				logMessage("Client "+client.getHostName()+" connected to server.");
+				logMessage("Client "+client.getHostName() + " connected to server.");
 				ConnectionHandler h = new ConnectionHandler(connect, this);
 				new Thread(h).start();
 //				BufferedReader input = new BufferedReader(new InputStreamReader(connect.getInputStream()));
