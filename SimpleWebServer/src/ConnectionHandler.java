@@ -33,6 +33,7 @@ public class ConnectionHandler implements Runnable {
 		//create the request details.
 	    BufferedOutputStream output = new BufferedOutputStream(out);
 	    Request r = null;
+	    while (! socket.isClosed()) {
 	    try {
 	    	r = Request.parseRequest(in, this.server);
 	    	server.logMessage(r.getFullHeader());
@@ -44,10 +45,14 @@ public class ConnectionHandler implements Runnable {
 			e.printStackTrace();
 		} catch (DetailException e) {
 			server.logMessage(e.getMessage());
+		} catch (SocketClosedException e) {
+			server.logMessage(e.getMessage());
+			break;
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			server.logMessage(e.getMessage());
 		}
+	    }
 	    try {
 			if (r != null && r.Close()) {
 				socket.close();
