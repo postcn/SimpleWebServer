@@ -39,15 +39,10 @@ public class ConnectionHandler implements Runnable {
 	    		server.logMessage(r.getFullHeader());
 	    		Response resp = Response.parseResponse(r, this.server);
 	    		if (resp.getResource()) {
-<<<<<<< HEAD
-	    			server.logMessage(resp.getResponse());
-	    			output.write(resp.getResponse().getBytes());
-	    		}else{
-	    			output.write(ErrorMessage404.getError().getBytes());
-=======
 	    			server.logMessage(resp.getResponse().toString());
 	    			output.write(resp.getResponse());
->>>>>>> 8b7760684f4331e58d22f65fc342adedda862c6d
+	    		}else{
+	    			output.write(ErrorMessage404.getError().getBytes());
 	    		}
 	    		//output.write(ErrorMessage501.getError().getBytes());
 	    		output.flush();
