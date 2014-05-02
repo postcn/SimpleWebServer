@@ -1,0 +1,16 @@
+=========
+README
+=========
+Authors: Rob Cooper, Caleb Post, Grant Smith
+
+How to Compile the Server (in Linux):
+-In the command line, navigate to the 'src' folder.
+-Run the command "javac Main.java"
+
+How to Run the Server (in Linux)
+-Compile the server
+-Run the command "java Main -root ../www"
+
+	OR
+
+-Run the bash script 'RUN.sh'
