@@ -63,9 +63,9 @@ public class Response {
 		return s;
 	}
 	
-	public String getResponse() {
+	public byte[] getResponse() {
 		String s = getCommonHeader();
-		return s;
+		return s.getBytes();
 	}
 	
 	public boolean getResource() {
