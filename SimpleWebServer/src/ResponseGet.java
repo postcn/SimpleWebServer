@@ -15,7 +15,7 @@ public class ResponseGet extends Response {
 		byte[] load = null;
 		super.server.logMessage("Client Requested Resource at "+fullDir);
 		for (String s: super.server.movedDirectories) {
-			if (fullDir.contains(s)) {
+			if (fullDir.contains(s+File.separator)) {
 				throw new FileMovedException();
 			}
 		}
