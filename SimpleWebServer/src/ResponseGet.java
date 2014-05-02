@@ -35,12 +35,14 @@ public class ResponseGet extends Response {
 	}
 
 	@Override
-	public String getResponse() {
+	public byte[] getResponse() {
 		String s = "HTTP/1.1 200 OK" + Constants.NEWLINE;
 		s += super.getCommonHeader();
-		for (byte b: super.getContent()) {
-			s += (char) b;
-		}
-		return s;
+		byte[] header = s.getBytes();
+		byte[] content = super.getContent();
+		byte[] combined = new byte[header.length + content.length];
+		System.arraycopy(header, 0, combined, 0, header.length);
+		System.arraycopy(content, 0, combined, header.length, content.length);
+		return combined;
 	}
 }

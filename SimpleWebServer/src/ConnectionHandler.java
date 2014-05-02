@@ -39,10 +39,15 @@ public class ConnectionHandler implements Runnable {
 	    		server.logMessage(r.getFullHeader());
 	    		Response resp = Response.parseResponse(r, this.server);
 	    		if (resp.getResource()) {
+<<<<<<< HEAD
 	    			server.logMessage(resp.getResponse());
 	    			output.write(resp.getResponse().getBytes());
 	    		}else{
 	    			output.write(ErrorMessage404.getError().getBytes());
+=======
+	    			server.logMessage(resp.getResponse().toString());
+	    			output.write(resp.getResponse());
+>>>>>>> 8b7760684f4331e58d22f65fc342adedda862c6d
 	    		}
 	    		//output.write(ErrorMessage501.getError().getBytes());
 	    		output.flush();
@@ -56,7 +61,7 @@ public class ConnectionHandler implements Runnable {
 	    		break;
 	    	} catch (Exception e) {
 	    		// TODO Auto-generated catch block
-	    		server.logMessage(e.getMessage());
+	    		server.logMessage(e.getMessage()+"Hello Bob");
 	    	}
 	    }
 	    try {
