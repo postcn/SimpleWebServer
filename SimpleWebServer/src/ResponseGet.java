@@ -10,10 +10,15 @@ public class ResponseGet extends Response {
 		this.localDir = r.resourcePath.replace("/", File.separator);
 	}
 	
-	public boolean getResource() {
+	public boolean getResource() throws FileMovedException {
 		String fullDir = super.server.getPath() + localDir;
 		byte[] load = null;
 		super.server.logMessage("Client Requested Resource at "+fullDir);
+		for (String s: super.server.movedDirectories) {
+			if (fullDir.contains(s)) {
+				throw new FileMovedException();
+			}
+		}
 		try {
 			File f = new File(fullDir);
 			load = new byte[(int) f.length()];

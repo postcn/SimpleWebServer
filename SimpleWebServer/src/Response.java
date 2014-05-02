@@ -71,7 +71,7 @@ public class Response {
 		return s.getBytes();
 	}
 	
-	public boolean getResource() {
+	public boolean getResource() throws FileMovedException {
 		return false;
 	}
 

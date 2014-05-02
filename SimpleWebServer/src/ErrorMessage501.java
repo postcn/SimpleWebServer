@@ -6,7 +6,7 @@ public class ErrorMessage501 {
 		s = s + "501 Not Implemented";
 	    s = s + "\r\n"; //other header fields,
 	    s = s + "Connection: keep-alive\r\n";
-	    s = s + "Server: SimpleWebServer432\r\n";
+	    s = s + "Server:" + Constants.SERVER_NAME+"\r\n";
 	    s = s + "Content-Type: text/html\r\n";
 	    String content = "<body><h3>501 Error</h3><p>Not Implemented</p></body>";
 	    s = s + "Content-Length: "+ content.length() + "\r\n\r\n";

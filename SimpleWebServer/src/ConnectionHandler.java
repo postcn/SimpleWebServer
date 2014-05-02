@@ -59,7 +59,9 @@ public class ConnectionHandler implements Runnable {
 	    	} catch (MalformedHeaderException e) {
 	    		server.logMessage(e.getMessage());
 	    		error = ErrorMessage400.getError();
-	    		
+	    	} catch (FileMovedException e) {
+	    		server.logMessage(e.getMessage());
+	    		error = ErrorMessage301.getError();	
 	    	} catch (Exception e) {
 				error = ErrorMessage500.getError();
 	    		server.logMessage(e.getMessage());
@@ -68,6 +70,7 @@ public class ConnectionHandler implements Runnable {
 	    		try {
 					output.write(error.getBytes());
 					output.flush();
+					server.logMessage(error);
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
