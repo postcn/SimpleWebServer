@@ -34,6 +34,7 @@ public class ConnectionHandler implements Runnable {
 	    BufferedOutputStream output = new BufferedOutputStream(out);
 	    Request r = null;
 	    while (! socket.isClosed()) {
+	    	String error = null;
 	    	try {
 	    		r = Request.parseRequest(in, this.server);
 	    		server.logMessage(r.getFullHeader());
@@ -54,9 +55,20 @@ public class ConnectionHandler implements Runnable {
 	    	} catch (SocketClosedException e) {	// bad header
 	    		server.logMessage(e.getMessage());
 	    		break;
+	    	} catch (MalformedHeaderException e) {
+	    		server.logMessage(e.getMessage());
+	    		error = ErrorMessage400.getError();
+	    		
 	    	} catch (Exception e) {
-	    		// TODO Auto-generated catch block
-	    		server.logMessage(e.getMessage()+"Hello Bob");
+	    		server.logMessage(e.getMessage());
+	    	}
+	    	if (error != null) {
+	    		try {
+					output.write(error.getBytes());
+					output.flush();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 	    	}
 	    }
 	    try {

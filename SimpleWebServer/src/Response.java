@@ -52,12 +52,12 @@ public class Response {
 	}
 	
 	public String getCommonHeader() {
-		String s = Constants.DATE_HEADER_LINE + this.Date + Constants.NEWLINE;
-		s += Constants.SERVER_HEADER_LINE + Constants.SERVER_NAME + Constants.NEWLINE;
-		s += Constants.CONNECTION_HEADER_LINE + this.Connection + Constants.NEWLINE;
+		String s = Constants.DATE_HEADER_LINE + Constants.SPLIT + this.Date + Constants.NEWLINE;
+		s += Constants.SERVER_HEADER_LINE + Constants.SPLIT + Constants.SERVER_NAME + Constants.NEWLINE;
+		s += Constants.CONNECTION_HEADER_LINE + Constants.SPLIT + this.Connection + Constants.NEWLINE;
 		if (dataLoad != null) {
-			s += Constants.CONTENT_TYPE_HEADER_LINE + this.ContentType + Constants.NEWLINE;
-			s += Constants.CONTENT_LENGTH_HEADER_LINE + this.ContentLength + Constants.NEWLINE;
+			s += Constants.CONTENT_TYPE_HEADER_LINE + Constants.SPLIT + this.ContentType + Constants.NEWLINE;
+			s += Constants.CONTENT_LENGTH_HEADER_LINE + Constants.SPLIT + this.ContentLength + Constants.NEWLINE;
 		}
 		s += Constants.NEWLINE;
 		return s;
