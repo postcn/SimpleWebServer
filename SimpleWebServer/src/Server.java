@@ -24,7 +24,7 @@ public class Server {
 		}
 		logMessage("Success. Server socket running on port " + port);
 		if (path != null) {
-			this.path = path.replace(".", System.getProperty("user.dir"));
+			this.path = path;
 		}
 		else {
 			this.path = System.getProperty("user.dir") +File.separator +"www";
