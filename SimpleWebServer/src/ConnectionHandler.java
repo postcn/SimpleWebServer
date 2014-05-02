@@ -46,17 +46,17 @@ public class ConnectionHandler implements Runnable {
 
 	    		output.flush();
 	    	} catch (IOException e) {
-	    		output.write(ErrorMessage505.getError().getBytes());
+	    		output.write(ErrorMessage500.getError().getBytes());
 	    		e.printStackTrace();
 	    	} catch (DetailException e) { // request type not supported - 501
 	    		output.write(ErrorMessage501.getError().getBytes());
 	    		server.logMessage(e.getMessage());
 	    	} catch (SocketClosedException e) {	// bad header
-	    		output.write(ErrorMessage505.getError().getBytes());
+	    		output.write(ErrorMessage500.getError().getBytes());
 	    		server.logMessage(e.getMessage());
 	    		break;
 	    	} catch (Exception e) {
-	    		output.write(ErrorMessage505.getError().getBytes());
+	    		output.write(ErrorMessage500.getError().getBytes());
 	    		server.logMessage(e.getMessage()+"Hello Bob");
 	    	}
 	    }
