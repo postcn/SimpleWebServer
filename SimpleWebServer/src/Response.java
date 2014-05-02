@@ -1,7 +1,10 @@
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 import java.util.TimeZone;
+
+import java.io.OutputStream;
 
 
 public class Response {
@@ -70,5 +73,10 @@ public class Response {
 	
 	public boolean getResource() {
 		return false;
+	}
+
+	public void send(OutputStream stream) throws IOException {
+		stream.write(this.getResponse());
+		stream.flush();
 	}
 }
