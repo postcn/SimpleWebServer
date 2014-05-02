@@ -21,7 +21,11 @@ public class Response {
 		if (r.getClass().equals(GetRequest.class)) {
 			response = new ResponseGet((GetRequest)r);
 		}
+		else if (r.getClass().equals(HeadRequest.class)) {
+			response = new ResponseHead((HeadRequest)r);
+		}
 		
+		response.Connection = r.Connection;
 		response.server = s;
 		return response;
 	}
