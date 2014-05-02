@@ -41,21 +41,22 @@ public class ConnectionHandler implements Runnable {
 	    		if (resp.getResource()) {
 	    			server.logMessage(resp.getResponse().toString());
 	    			output.write(resp.getResponse());
-	    		}else{
+	    		}else
 	    			output.write(ErrorMessage404.getError().getBytes());
-	    		}
-	    		//output.write(ErrorMessage501.getError().getBytes());
+
 	    		output.flush();
 	    	} catch (IOException e) {
+	    		output.write(ErrorMessage505.getError().getBytes());
 	    		e.printStackTrace();
-	    	} catch (DetailException e) { // request type not supported - 400
-
+	    	} catch (DetailException e) { // request type not supported - 501
+	    		output.write(ErrorMessage501.getError().getBytes());
 	    		server.logMessage(e.getMessage());
 	    	} catch (SocketClosedException e) {	// bad header
+	    		output.write(ErrorMessage505.getError().getBytes());
 	    		server.logMessage(e.getMessage());
 	    		break;
 	    	} catch (Exception e) {
-	    		// TODO Auto-generated catch block
+	    		output.write(ErrorMessage505.getError().getBytes());
 	    		server.logMessage(e.getMessage()+"Hello Bob");
 	    	}
 	    }
