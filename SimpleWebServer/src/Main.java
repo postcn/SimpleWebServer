@@ -3,6 +3,7 @@
 */
 public class Main {
 	public static final int DEFAULT_PORT = 8000;
+	public static int failFlag = 0;
 	
 	/*
 		Parses the command line arguments input by the user
@@ -10,7 +11,7 @@ public class Main {
 	*/
 	public static void main(String[] args) {
 		// initialize flags for parsing
-		int pFlag = 0,rFlag = 0;
+		int pFlag = 0, rFlag = 0;
 
 		// intialize server defaults
 		int port = DEFAULT_PORT;
@@ -23,6 +24,8 @@ public class Main {
 				pFlag = 1;
 			else if (str.equals("-root"))
 				rFlag = 1;
+			else if (str.equals("-failPostTo500"))
+				failFlag = 1;
 			else if (str.equals("-debug") || str.equals("-d"))
 				debug = true;
 			else{
