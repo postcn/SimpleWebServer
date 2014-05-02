@@ -42,17 +42,18 @@ public class ConnectionHandler implements Runnable {
 	    		if (resp.getResource()) {
 	    			server.logMessage(resp.getResponse().toString());
 	    			output.write(resp.getResponse());
-	    		}else{
+	    		}else
 	    			output.write(ErrorMessage404.getError().getBytes());
-	    		}
-	    		//output.write(ErrorMessage501.getError().getBytes());
+
 	    		output.flush();
 	    	} catch (IOException e) {
+	    		error = ErrorMessage500.getError();
 	    		e.printStackTrace();
-	    	} catch (DetailException e) { // request type not supported - 400
-
+	    	} catch (DetailException e) { // request type not supported - 501
+	    		error = ErrorMessage501.getError();
 	    		server.logMessage(e.getMessage());
 	    	} catch (SocketClosedException e) {	// bad header
+	    		error = ErrorMessage500.getError();
 	    		server.logMessage(e.getMessage());
 	    		break;
 	    	} catch (MalformedHeaderException e) {
@@ -60,6 +61,7 @@ public class ConnectionHandler implements Runnable {
 	    		error = ErrorMessage400.getError();
 	    		
 	    	} catch (Exception e) {
+				error = ErrorMessage500.getError();
 	    		server.logMessage(e.getMessage());
 	    	}
 	    	if (error != null) {

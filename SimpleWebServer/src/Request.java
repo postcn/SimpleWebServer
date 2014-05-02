@@ -27,6 +27,9 @@ public class Request {
 			r = new HeadRequest(typeLine);
 		}
 		else if (typeLine.contains("POST")) {
+			if (Main.failFlag == 1) {
+				throw new IOException();
+			}
 			r = new PostRequest();
 		}
 		else {
