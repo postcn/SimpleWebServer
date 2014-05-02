@@ -1,5 +1,6 @@
 import java.io.File;
-import java.util.Scanner;
+import java.io.FileInputStream;
+import java.net.URLConnection;
 
 
 public class ResponseGet extends Response {
@@ -9,21 +10,37 @@ public class ResponseGet extends Response {
 		this.localDir = r.resourcePath.replace("/", File.separator);
 	}
 	
-	public String getResource() {
+	public boolean getResource() {
 		String fullDir = super.server.getPath() + localDir;
+		byte[] load = null;
 		super.server.logMessage("Client Requested Resource at "+fullDir);
 		try {
 			File f = new File(fullDir);
-			Scanner scan = new Scanner(f);
-			scan.useDelimiter("\\");
-			super.dataLoad = scan.next();
-			scan.close();
+			load = new byte[(int) f.length()];
+			FileInputStream fin = new FileInputStream(f);
+			fin.read(load);
+			fin.close();
+			String content = URLConnection.guessContentTypeFromName(fullDir);
+			if (content == null) {
+				super.server.logMessage("Requested an unknown file type");
+			}
+			super.server.logMessage("Requested content was identified as "+content);
+			super.setContent(load, content);
 		}
 		catch(Exception e) {
 			super.server.logMessage(e.getMessage());
-			return null;
+			return false;
 		}
-		return super.dataLoad;
+		return true;
 	}
 
+	@Override
+	public String getResponse() {
+		String s = "HTTP/1.1 200 OK" + Constants.NEWLINE;
+		s += super.getCommonHeader();
+		for (byte b: super.getContent()) {
+			s += (char) b;
+		}
+		return s;
+	}
 }

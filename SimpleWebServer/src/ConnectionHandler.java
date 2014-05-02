@@ -37,13 +37,13 @@ public class ConnectionHandler implements Runnable {
 	    	try {
 	    		r = Request.parseRequest(in, this.server);
 	    		server.logMessage(r.getFullHeader());
-	    		server.logMessage(ErrorMessage501.getError());
-	    		output.write(ErrorMessage501.getError().getBytes());
-	    		output.flush();
 	    		Response resp = Response.parseResponse(r, this.server);
-	    		if (resp.getClass().equals(ResponseGet.class)) {
-	    			((ResponseGet)resp).getResource();
+	    		if (resp.getResource()) {
+	    			server.logMessage(resp.getResponse());
+	    			output.write(resp.getResponse().getBytes());
 	    		}
+	    		//output.write(ErrorMessage501.getError().getBytes());
+	    		output.flush();
 	    	} catch (IOException e) {
 	    		// TODO Auto-generated catch block
 	    		e.printStackTrace();

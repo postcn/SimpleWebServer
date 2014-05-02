@@ -11,7 +11,7 @@ public class Response {
 	protected int ContentLength;
 	protected String Connection;
 	private String ContentType;
-	private String dataLoad;
+	private byte[] dataLoad;
 	
 	public static Response parseResponse(Request r, Server s) {
 		Response response = null;
@@ -37,17 +37,38 @@ public class Response {
 	    return dateFormat.format(calendar.getTime());
 	}
 	
-	public void setContent(String data, String contentType) {
+	public void setContent(byte[] data, String contentType) {
 		this.dataLoad = data;
-		this.ContentLength = dataLoad.length();
+		this.ContentLength = dataLoad.length;
 		this.ContentType = contentType;
 	}
 	
-	public String getContent() {
+	public byte[] getContent() {
 		return this.dataLoad;
 	}
 
 	public String getContentType() {
 		return this.ContentType;
+	}
+	
+	public String getCommonHeader() {
+		String s = Constants.DATE_HEADER_LINE + this.Date + Constants.NEWLINE;
+		s += Constants.SERVER_HEADER_LINE + Constants.SERVER_NAME + Constants.NEWLINE;
+		s += Constants.CONNECTION_HEADER_LINE + this.Connection + Constants.NEWLINE;
+		if (dataLoad != null) {
+			s += Constants.CONTENT_TYPE_HEADER_LINE + this.ContentType + Constants.NEWLINE;
+			s += Constants.CONTENT_LENGTH_HEADER_LINE + this.ContentLength + Constants.NEWLINE;
+		}
+		s += Constants.NEWLINE;
+		return s;
+	}
+	
+	public String getResponse() {
+		String s = getCommonHeader();
+		return s;
+	}
+	
+	public boolean getResource() {
+		return false;
 	}
 }

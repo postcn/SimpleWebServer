@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="content-type" content="application/xhtml+xml; charset=iso-8859-1" />
+	<title>CSSE 432: Term project -- Implementing a software router </title> 
+</head>
+<body>
+<h1>Term Project <br />CSSE 432 &#8211; Computer Networks</h1> 
+
+<h2> Web Server Specifications </h2>
+
+<h3> Objectives</h3>
+In this project, you will:
+<ul>
+	<li>demonstrate your understanding of application layer (HTTP) and network layer protocols. </li>
+	<li>work in teams to implement a <strong>functioning HTTP/1.1 compliant</strong> web server that <strong>supports multiple clients simultaneously</strong>. </li>
+</ul>
+
+<h3> Project teams </h3>
+
+You will work in teams of two to four members. A repository has been created for your team.  Clicking on the link for your team repository will reveal the URL for that repository.  Each member of your team is advised to checkout your team repository at the start of the project. Before you edit code, documents, or other aspects of the project, you should update your local workspace, edit, update, then commit your work back to your repository. Using that cycle will minimize subversion conflicts. Remember to provide appropriate commit messages and to do <code>svn add</code> if you want to add new files to your repository. Of course, don't forget to commit after you add new files.
+<ul>
+<li>
+	<a href="http://svn.csse.rose-hulman.edu/repos/csse432-201430-team01/">Team 01 </a><br />
+	<ul>
+		<li> alvessr, &emsp; murphysw, &emsp; sturgedl</li>
+	</ul>
+</li>
+<li>
+	<a href="http://svn.csse.rose-hulman.edu/repos/csse432-201430-team02/">Team 02 </a><br />
+	<ul>
+		<li> onggr, &emsp; schuenjr, &emsp; hansondg</li>
+	</ul>
+</li>
+<li>
+	<a href="http://svn.csse.rose-hulman.edu/repos/csse432-201430-team03/">Team 03 </a><br />
+	<ul>
+		<li> cooperra, &emsp; postcn, &emsp; smithgb</li>
+	</ul>
+</li>
+<li>
+	<a href="http://svn.csse.rose-hulman.edu/repos/csse432-201430-team04/">Team 04 </a><br />
+	<ul>
+		<li> millerc5, &emsp; miskowbs, &emsp; stewarzt</li>
+	</ul>
+</li>
+<li>
+	<a href="http://svn.csse.rose-hulman.edu/repos/csse432-201430-team05/">Team 05 </a><br />
+	<ul>
+		<li> coxbc, &emsp; iversoda, &emsp; shomerrt, &emsp; vianadcc</li>
+	</ul>
+</li> <!--
+<li>
+	<a href="http://svn.csse.rose-hulman.edu/repos/csse432-201430-team06/">Team 06 </a><br />
+	<ul>
+		<li> scroggd </li>
+	</ul>
+</li> -->
+</ul>
+
+<h3>Project Description</h3>
+Your project is to design and implement a <strong>functioning HTTP/1.1 compliant</strong> web server that <strong>supports multiple clients simultaneously</strong>. The web server should have a security component of your choice and should support persistent and stateful connections (using cookies or otherwise).
+
+<h3>Programming Guidelines</h3>
+Your web server may be written in any language (Java, Python, or C, although C is preferred). Do not use any custom socket classes or libraries except for libssl (if you are implementing SSL support).
+<p>
+Be sure to provide a <code>Makefile</code> OR <code>bash script</code> for building AND running your web server. </p>
+
+
+<h3>Running the server</h3>
+Your web server must accept the following command line options in any arbitrary order. If an argument is left out when running the server, then the specified default values will be used.
+<ul>
+	<li> <code>-p port</code>: Overrides the default port the server should run on. The default is port 8000 (note that ports under 1024 require root access to use, so we cannot use port 80 as default).</li>
+	
+	<li> <code>-root path</code>: Sets the root directory of the web server. This is where the files are served from. For example, if the server is run with
+ <pre>-root ./networks/website</pre> then a request for  <code>http://www.myserver.com/index.html</code> will result in serving the file  <code>./networks/website/index.html</code>. If this option is not present,  <code>./www </code> will be used as the default root directory.</li>
+ 
+ <li> <code>-debug</code>: When this option is present, you may print out debugging messages to the console (stdout). When this option is not present, your program may not print any output to the console. </li>
+ 
+ <li> <code>-s sslport</code>: If you are implementing SSL support, your server listens for an SSL connection on the specified port. Your server should be able to listen on a normal port and on an SSL port at the same time, and handle both types of connections. The default SSL port is 8001. </li>
+</ul>
+
+A <code>README file</code> is provided in your project repository.  Be sure to add detailed instructions on how to run and test your web server.  Add notable features that you implemented in your web server.
+
+<h3>HTTP Operations</h3>
+You may refer to RFC 2616 for further information on the <strong>HTTP/1.1 specifications</strong>. You will need to support the <code>GET</code>, <code>HEAD</code>, and <code>POST</code> request methods. You will need to implement only the <code>200</code>, <code>301</code>, <code>400</code>, <code>404</code>, <code>500</code>, and <code>501</code> error codes. Your server should also respond to the <code>Host</code>, <code>User-Agent</code>, <code>Connection</code>, <code>Accept</code>, and at least two other request headers. It should also produce appropriate response headers including but not limited to the <code>Date</code>, <code>Server</code>, <code>Content-Length</code>, <code>Connection</code> and <code>Content-Type</code> headers.
+
+<h2>Persistent Connections</h2>
+If an <strong>HTTP/1.1 client</strong> (web browser, telnet, client program) sends multiple requests through a single connection, the server <strong>MUST</strong> keep the connection open and send responses back in the same order as the requests. If a request includes the <code>Connection: close</code> header, then that request is the final one for the connection and the server should close the connection after sending the response. Also, the server should close an idle connection after some timeout period (can be anything, but yours should be 15 seconds). Your server must support these persistent connections. Please remember that a single client may issue additional requests while your server is still reading the first request. In this case, your server must read in and process all requests before closing the connection.
+
+<h2>Multiple Connections</h2>
+A web server that accepts only one connection at a time is probably impractical and definitely not very useful. As such, your server should also be written to accept multiple connections (usually from multiple hosts). It should be able to simultaneously listen for incoming connections, as well as keep reading from the connections that are already open. Note that today's web browsers may open two connections to your server (as per RFC 2068), so your server should be able to handle these multiple connections.
+
+
+<h2>Stateful Connections and the Security Component</h2>
+You will be responsible for choosing your own method of implementing state and security in your web server. Your design should be described in a design document. Suggestions include implementing cookies or a database to maintain state or implementing SSL or firewalls within the web server for the security component. <strong>Be sure to invest sufficient time to properly research methods of implementing state and security in your web server</strong>.
+
+<h3>Milestones</h3>
+<ol>
+	<li> <strong>Prototype Demonstration #1 (End of Week 7)</strong>: Teams will demonstrate their server. Teams should demonstrate that their server starts with the right command line arguments, handles, GET and HEAD requests, and returns the correct error codes. </li>
+	
+	<li> <strong>Prototype Demonstration #2 (End of Week 8)</strong>: Teams will demonstrate that their server supports multiple connections.</li>
+	
+	<li> <strong>Design Document (Start of Week 9)</strong>: Teams should submit their design document in the svn folder called <code>Documentation</code>. The document should include:
+		<ol>
+			<li> The programming language that the team decided to be use.</li>
+			<li> The socket infrastructure provided by the language (socket/bind/listen/accept). </li>
+			<li> Description of your proposed implementation for stateful connections and your security component. </li>
+		</ol>
+	</li>
+	
+	<li> <strong>Prototype Demonstration #3 (End of Week 9)</strong>: Teams will demonstrate that their server has a security component and supports stateful connections.</li>
+	
+	<li> <strong>Final Demonstration and Final Report (End of Week 10)</strong>: Teams will do a demonstration in class. Teams will also submit a final report to their Project folder on svn. The final report will include a final description of the server implementation and code. </li>
+</ol>
+
+<h3>Grading </h3>
+
+<table>
+<tr>
+   <th>Artifacts</th>
+   <th>% of Grade</th>
+</tr>
+
+<tr>
+	<td> Prototype Demonstration #1 </td>
+	<td> 10 </td>
+</tr>
+
+<tr>
+	<td> Prototype Demonstration #2 </td>
+	<td> 15 </td>
+</tr>
+
+<tr>
+	<td> Design Document </td>
+	<td> 10 </td>
+</tr>
+
+<tr>
+	<td> Prototype Demonstration #3 </td>
+	<td> 15 </td>
+</tr>
+
+<tr>
+	<td> Final Demonstration </td>
+	<td> 40 </td>
+</tr>
+
+<tr>
+	<td> Final Report </td>
+	<td> 10 </td>
+</tr>
+
+</table>
+
+<h3>Resources </h3>
+<ol>
+	<li>Theis project was adapted from this<a href="http://www.cs.cmu.edu/%7Esrini/15-441/F02/Projects/lab01/docs/lab01.pdf"> Mini Web Server</a> Assignment. A thorough description of the various components in this project and a long list of resources are available from the Mini Web Server assignment.</li>
+	<li><a href="http://www.jmarshall.com/easy/http/"> HTTP Made Really Easy </a></li>
+	<li>Various RFCs for the protocols.</li>
+</ol>
+
+
+</body>
+</html>
