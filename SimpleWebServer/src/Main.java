@@ -45,7 +45,7 @@ public class Main {
 			}
 		}
 		// Spawn server
-		Server s = new Server(port, path, debug);
+		new Server(port, path, debug);
 	}
 
 }

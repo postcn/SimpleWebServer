@@ -3,6 +3,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
+import java.net.SocketException;
 
 
 public class ConnectionHandler implements Runnable {
@@ -46,6 +47,15 @@ public class ConnectionHandler implements Runnable {
 	    			output.write(ErrorMessage404.getError().getBytes());
 
 	    		output.flush();
+	    	} catch (SocketException e) {
+	    		//client closed connection or the socket is unexpectedly closed.
+	    		try {
+					socket.close();
+					server.logMessage("Socket was closed.");
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+	    		break;
 	    	} catch (IOException e) {
 	    		error = ErrorMessage500.getError();
 	    		e.printStackTrace();
