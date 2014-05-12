@@ -7,6 +7,7 @@ import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Random;
 
 
 public class Server {
@@ -14,6 +15,7 @@ public class Server {
 	private String path;
 	ServerSocket socket;
 	public ArrayList<String> movedDirectories = new ArrayList<String>();
+	public ArrayList<String> cookies = new ArrayList<String>();
 
 	public Server(int port, String path, boolean debug) {
 		this.debug = debug;
@@ -33,6 +35,7 @@ public class Server {
 		}
 		logMessage("Server running with root directory " + this.path);
 		loadMoved();
+		loadCookies();
 		handleConnections();
 	}
 	
@@ -57,6 +60,28 @@ public class Server {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	private void loadCookies() {
+		File moved = new File(this.path + File.separator + "cookies.txt");
+		try {
+			BufferedReader reader = new BufferedReader(new FileReader(moved));
+			String name = reader.readLine();
+			while (name != null) {
+				cookies.add(name);
+				name = reader.readLine();
+			}
+			reader.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public String getRandomCookieName() {
+		Random r = new Random();
+        return cookies.get(r.nextInt(cookies.size()));
 	}
 	
 	public void handleConnections() {

@@ -1,9 +1,9 @@
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.Locale;
 import java.util.TimeZone;
-
 import java.io.OutputStream;
 
 
@@ -14,10 +14,12 @@ public class Response {
 	protected int ContentLength;
 	protected String Connection;
 	private String ContentType;
+	private HashMap<String, String> Cookies;
 	private byte[] dataLoad;
 	
 	public static Response parseResponse(Request r, Server s) {
 		Response response = null;
+		
 		if (r.getClass().equals(GetRequest.class)) {
 			response = new ResponseGet((GetRequest)r);
 		}
@@ -25,6 +27,18 @@ public class Response {
 			response = new ResponseHead((HeadRequest)r);
 		}
 		
+		if (r.Cookies.keySet().size() > 0) {
+			response.Cookies = r.Cookies;
+			//add one to the cookie for a proper request.
+			String key = response.Cookies.keySet().iterator().next();
+			String value = response.Cookies.get(key);
+			Integer count = Integer.parseInt(value) + 1;
+			response.Cookies.put(key, count.toString());
+		}
+		else {
+			response.Cookies = new HashMap<String, String>();
+			response.Cookies.put(s.getRandomCookieName(), ""+1);
+		}
 		response.Connection = r.Connection;
 		response.server = s;
 		return response;
@@ -38,6 +52,15 @@ public class Response {
 	/* Thanks Stackoverflow! */
 	private String getServerTime() {
 	    Calendar calendar = Calendar.getInstance();
+	    SimpleDateFormat dateFormat = new SimpleDateFormat(
+	        "EEE, dd MMM yyyy HH:mm:ss z", Locale.US);
+	    dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+	    return dateFormat.format(calendar.getTime());
+	}
+	
+	private String getCookieExpiration() {
+		Calendar calendar = Calendar.getInstance();
+		calendar.add(Calendar.YEAR, 1);
 	    SimpleDateFormat dateFormat = new SimpleDateFormat(
 	        "EEE, dd MMM yyyy HH:mm:ss z", Locale.US);
 	    dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
@@ -66,6 +89,10 @@ public class Response {
 		if (dataLoad != null) {
 			s += Constants.CONTENT_TYPE_HEADER_LINE + Constants.SPLIT + this.ContentType + Constants.NEWLINE;
 			s += Constants.CONTENT_LENGTH_HEADER_LINE + Constants.SPLIT + this.ContentLength + Constants.NEWLINE;
+		}
+		for (String key: Cookies.keySet()) {
+			String value = Cookies.get(key);
+			s += Constants.SET_COOKIE_HEADER_LINE + Constants.SPLIT + key + Constants.COOKIE_VALUE_SEPERATOR + value + Constants.COOKIE_SEPERATOR + Constants.EXPIRES + getCookieExpiration() + Constants.NEWLINE; 
 		}
 		s += Constants.NEWLINE;
 		return s;
