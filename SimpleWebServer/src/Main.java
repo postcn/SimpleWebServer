@@ -45,6 +45,7 @@ public class Main {
 			}
 		}
 		// Spawn server
+		System.setProperty("java.net.preferIPv4Stack", "true");	// prefer IPv4 addressing
 		new Server(port, path, debug);
 	}
 

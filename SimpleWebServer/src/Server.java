@@ -14,6 +14,7 @@ public class Server {
 	private String path;
 	ServerSocket socket;
 	public ArrayList<String> movedDirectories = new ArrayList<String>();
+	public ArrayList<String> whiteList = new ArrayList<String>();
 
 	public Server(int port, String path, boolean debug) {
 		this.debug = debug;
@@ -33,6 +34,7 @@ public class Server {
 		}
 		logMessage("Server running with root directory " + this.path);
 		loadMoved();
+		loadWhiteList();
 		handleConnections();
 	}
 	
@@ -58,6 +60,26 @@ public class Server {
 			e.printStackTrace();
 		}
 	}
+
+	private void loadWhiteList(){
+		File wlist = new File(this.path + File.separator + ".htaccess");
+		try{
+			BufferedReader reader = new BufferedReader(new FileReader(wlist));
+			String address = reader.readLine();
+			while (address != null) {
+				if(address.equalsIgnoreCase("Deny from all")){
+					break;
+				}
+				whiteList.add(address);
+				address = reader.readLine();
+			}
+			reader.close();
+		}catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 	
 	public void handleConnections() {
 		while(true) {
@@ -65,10 +87,15 @@ public class Server {
 				Socket connect = this.socket.accept();
 				connect.setKeepAlive(true);
 				InetAddress client = connect.getInetAddress();
-				logMessage("Client "+client.getHostName() + " connected to server.");
-				ConnectionHandler h = new ConnectionHandler(connect, this);
-				new Thread(h).start();
-			        
+				if (whiteList.contains(client.getHostAddress())) {
+					logMessage("Client "+client.getHostName() + " connected to server.");
+					ConnectionHandler h = new ConnectionHandler(connect, this);
+					new Thread(h).start();
+				}else{
+					logMessage("\r\n==================\r\nBlocked " + client.getHostAddress() + "\r\n==================");
+					DeniedConnectionHandler h = new DeniedConnectionHandler(connect, this);
+					new Thread(h).start();
+				}				
 			} catch (IOException e) {
 				logMessage("Error during client connection");
 			}
