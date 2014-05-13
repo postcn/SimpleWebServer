@@ -12,4 +12,9 @@ public abstract class Constants {
 	public final static String CONTENT_LENGTH_HEADER_LINE = "Content-Length";
 	public final static String CONTENT_TYPE_HEADER_LINE = "Content-Type";
 	public final static String SPLIT = ": ";
+	public final static String COOKIE_HEADER_LINE = "Cookie";
+	public final static String COOKIE_SEPERATOR = "; ";
+	public final static String COOKIE_VALUE_SEPERATOR = "=";
+	public final static String SET_COOKIE_HEADER_LINE = "Set-Cookie";
+	public final static String EXPIRES = "Expires=";
 }
