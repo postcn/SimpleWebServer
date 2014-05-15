@@ -14,3 +14,29 @@ How to Run the Server (in Linux)
 	OR
 
 -Run the bash script 'RUN.sh'
+
+========
+Notable Features:
+-Support Multiple Connections
+-GET and HEAD requests for any content types.
+-200, 301, 400, 404, 500, 501 error codes.
+
+Security Component:
+Implemented a white-list (".htaccess"). If an IP is listed in the white-list, all connections from that IP will be allowed. Otherwise, any connection from any other IP will be rejected.*
+
+State-fullness:
+Implemented HTTP cookies. When a client connects to the web-server they are given a cookie. As a client interacts with the server, that cookie is updated to exhibit changes in state.*
+
+*More details and a thorough explanation can be found in the Design Documentation in the Documentation folder.
+
+Testing:
+-Run bash script to launch server with default configuration.
+-Request in browser localhost:8000/HM1.jpg
+-Request using POSTMAN extension for Chrome HEAD same file.
+-To get 500 Error launch Main with flag -failPostTo500 and make POST request to server
+-To get 301 redirect specify a url with droids/ in the name as a directory. This will redirect to the droids image.
+-To get 400 use utility to send malformed request.
+-To get 404 request file not in www directory.
+-To get 501 use POSTMAN to send request not GET or HEAD
+
+-To test the multiple connections functionality, it is a bit more difficult. You must have multiple computers making requests simultaneously to server. This can be seen in the console output. With what is being requested by each user.
