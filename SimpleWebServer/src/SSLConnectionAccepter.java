@@ -1,4 +1,7 @@
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -38,7 +41,7 @@ public class SSLConnectionAccepter implements Runnable {
 		while(true) {
 			try {
 				SSLSocket connect = (SSLSocket) this.sslsocket.accept();
-				InputStream inputstream = sslsocket.getInputStream();
+				InputStream inputstream = connect.getInputStream();
 		        InputStreamReader inputstreamreader = new InputStreamReader(inputstream);
 		        BufferedReader bufferedreader = new BufferedReader(inputstreamreader);
 
