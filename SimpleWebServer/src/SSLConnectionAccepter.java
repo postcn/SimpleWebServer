@@ -15,6 +15,8 @@ public class SSLConnectionAccepter implements Runnable {
 	
 	public SSLConnectionAccepter(Server s, int port) {
 		this.s = s;
+		System.setProperties("javax.net.ssl.keyStore", "mySrvKeystore");
+		System.setProperties("javax.net.ssl.keyStorePassword", "123456");
 		try {
 			s.logMessage("Trying to bind to ssl localhost on port " + port + "...");
 			SSLServerSocketFactory sslserversocketfactory = (SSLServerSocketFactory) SSLServerSocketFactory.getDefault();
@@ -33,6 +35,7 @@ public class SSLConnectionAccepter implements Runnable {
 			try {
 				SSLSocket connect = (SSLSocket) this.sslsocket.accept();
 				connect.setKeepAlive(true);
+				connect.startHandshake();
 				InetAddress client = connect.getInetAddress();
 				if (s.whiteList.contains(client.getHostAddress())) {
 					s.logMessage("Client "+client.getHostName() + " connected to server.");
@@ -45,6 +48,7 @@ public class SSLConnectionAccepter implements Runnable {
 				}				
 			} catch (IOException e) {
 				s.logMessage("Error during client connection");
+				e.printStackTrace();
 			}
 		}
 	}
