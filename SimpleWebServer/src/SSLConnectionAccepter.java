@@ -17,6 +17,10 @@ public class SSLConnectionAccepter implements Runnable {
 		this.s = s;
 		System.setProperty("javax.net.ssl.keyStore", "mySrvKeystore");
 		System.setProperty("javax.net.ssl.keyStorePassword", "123456");
+		if (s.getDebug()) {
+			System.setProperty("java.protocol.handler.pkgs","com.sun.net.ssl.internal.www.protocol");
+			System.setProperty("javax.net.debug", "ssl");
+		}
 		try {
 			s.logMessage("Trying to bind to ssl localhost on port " + port + "...");
 			SSLServerSocketFactory sslserversocketfactory = (SSLServerSocketFactory) SSLServerSocketFactory.getDefault();
@@ -34,18 +38,26 @@ public class SSLConnectionAccepter implements Runnable {
 		while(true) {
 			try {
 				SSLSocket connect = (SSLSocket) this.sslsocket.accept();
-				connect.setKeepAlive(true);
-				connect.startHandshake();
-				InetAddress client = connect.getInetAddress();
-				if (s.whiteList.contains(client.getHostAddress())) {
-					s.logMessage("Client "+client.getHostName() + " connected to server.");
-					ConnectionHandler h = new ConnectionHandler(connect, s);
-					new Thread(h).start();
-				}else{
-					s.logMessage("\r\n==================\r\nBlocked " + client.getHostAddress() + "\r\n==================");
-					DeniedConnectionHandler h = new DeniedConnectionHandler(connect, s);
-					new Thread(h).start();
-				}				
+				InputStream inputstream = sslsocket.getInputStream();
+		        InputStreamReader inputstreamreader = new InputStreamReader(inputstream);
+		        BufferedReader bufferedreader = new BufferedReader(inputstreamreader);
+
+		        String string = null;
+		        while ((string = bufferedreader.readLine()) != null) {
+		            System.out.println(string);
+		            System.out.flush();
+		        }
+				//connect.setKeepAlive(true);
+				// InetAddress client = connect.getInetAddress();
+				// if (s.whiteList.contains(client.getHostAddress())) {
+				// 	s.logMessage("Client "+client.getHostName() + " connected to server.");
+				// 	ConnectionHandler h = new ConnectionHandler(connect, s);
+				// 	new Thread(h).start();
+				// }else{
+				// 	s.logMessage("\r\n==================\r\nBlocked " + client.getHostAddress() + "\r\n==================");
+				// 	DeniedConnectionHandler h = new DeniedConnectionHandler(connect, s);
+				// 	new Thread(h).start();
+				// }				
 			} catch (IOException e) {
 				s.logMessage("Error during client connection");
 				e.printStackTrace();

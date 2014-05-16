@@ -109,4 +109,8 @@ public class Server {
 	public String getPath() {
 		return this.path;
 	}
+
+	public boolean getDebug() {
+		return this.debug;
+	}
 }
