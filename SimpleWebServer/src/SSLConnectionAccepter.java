@@ -15,8 +15,8 @@ public class SSLConnectionAccepter implements Runnable {
 	
 	public SSLConnectionAccepter(Server s, int port) {
 		this.s = s;
-		System.setProperties("javax.net.ssl.keyStore", "mySrvKeystore");
-		System.setProperties("javax.net.ssl.keyStorePassword", "123456");
+		System.setProperty("javax.net.ssl.keyStore", "mySrvKeystore");
+		System.setProperty("javax.net.ssl.keyStorePassword", "123456");
 		try {
 			s.logMessage("Trying to bind to ssl localhost on port " + port + "...");
 			SSLServerSocketFactory sslserversocketfactory = (SSLServerSocketFactory) SSLServerSocketFactory.getDefault();

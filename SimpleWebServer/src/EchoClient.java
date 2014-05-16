@@ -20,10 +20,13 @@ class EchoClient {
             OutputStreamWriter outputstreamwriter = new OutputStreamWriter(outputstream);
             BufferedWriter bufferedwriter = new BufferedWriter(outputstreamwriter);
 
+            bufferedwriter.write("GET /HM1.jpg HTTP/1.1\nUser-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/29.0.1547.76 Safari/537.36\nHost: localhost:8001\nAccept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8\nConnection: keep-alive\n\n");
+            bufferedwriter.flush();
+            
             String string = null;
             while ((string = bufferedreader.readLine()) != null) {
-                bufferedwriter.write(string + '\n');
-                bufferedwriter.flush();
+                System.out.println(string);
+                
             }
         } catch (Exception exception) {
             exception.printStackTrace();
