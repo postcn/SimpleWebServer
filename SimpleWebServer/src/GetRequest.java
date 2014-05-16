@@ -1,7 +1,7 @@
 
 
 
-public class GetRequest extends Request {
+public class GetRequest extends Request throws AccessDeniedException {
 	
 	String resourcePath;
 
