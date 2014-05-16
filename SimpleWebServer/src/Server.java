@@ -13,21 +13,16 @@ import java.util.Random;
 public class Server {
 	private boolean debug;
 	private String path;
-	ServerSocket socket;
+	private ConnectionAccepter accepter;
+	private SSLConnectionAccepter sslaccepter;
 	public ArrayList<String> movedDirectories = new ArrayList<String>();
 	public ArrayList<String> whiteList = new ArrayList<String>();
 	public ArrayList<String> cookies = new ArrayList<String>();
 
-	public Server(int port, String path, boolean debug) {
+	public Server(int port, int sslport,String path, boolean debug) {
 		this.debug = debug;
-		try {
-			logMessage("Trying to bind to localhost on port " + port + "...");
-			socket = new ServerSocket(port);
-		}
-		catch (Exception e) {
-			logMessage("Fatal error occurred when trying to create server socket");
-		}
-		logMessage("Success. Server socket running on port " + port);
+		this.accepter = new ConnectionAccepter(this, port);
+		this.sslaccepter = new SSLConnectionAccepter(this, sslport);
 		if (path != null) {
 			this.path = path;
 		}
@@ -107,24 +102,8 @@ public class Server {
 	}
 	
 	public void handleConnections() {
-		while(true) {
-			try {
-				Socket connect = this.socket.accept();
-				connect.setKeepAlive(true);
-				InetAddress client = connect.getInetAddress();
-				if (whiteList.contains(client.getHostAddress())) {
-					logMessage("Client "+client.getHostName() + " connected to server.");
-					ConnectionHandler h = new ConnectionHandler(connect, this);
-					new Thread(h).start();
-				}else{
-					logMessage("\r\n==================\r\nBlocked " + client.getHostAddress() + "\r\n==================");
-					DeniedConnectionHandler h = new DeniedConnectionHandler(connect, this);
-					new Thread(h).start();
-				}				
-			} catch (IOException e) {
-				logMessage("Error during client connection");
-			}
-		}
+		new Thread(accepter).run();
+		new Thread(sslaccepter).run();
 	}
 	
 	public String getPath() {

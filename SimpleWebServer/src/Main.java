@@ -3,6 +3,7 @@
 */
 public class Main {
 	public static final int DEFAULT_PORT = 8000;
+	public static final int DEFAULT_SSL_PORT = 8001;
 	public static int failFlag = 0;
 	
 	/*
@@ -11,10 +12,11 @@ public class Main {
 	*/
 	public static void main(String[] args) {
 		// initialize flags for parsing
-		int pFlag = 0, rFlag = 0;
+		int pFlag = 0, rFlag = 0, sFlag = 0;
 
 		// intialize server defaults
 		int port = DEFAULT_PORT;
+		int sslport = DEFAULT_SSL_PORT;
 		String path = null;
 		boolean debug = false;
 
@@ -22,6 +24,8 @@ public class Main {
 		for(String str : args){
 			if (str.equals("-p"))
 				pFlag = 1;
+			else if (str.equals("-s"))
+				sFlag = 1;
 			else if (str.equals("-root"))
 				rFlag = 1;
 			else if (str.equals("-failPostTo500"))
@@ -37,6 +41,9 @@ public class Main {
 					// set root folder and reset flag
 					path = str;
 					rFlag = 0;
+				}else if (sFlag == 1) {
+					sslport = (Integer.parseInt(str));
+					sFlag = 0;
 				}else{
 					// print message and quit
 					System.out.println("Invlaid arguments.\n");
@@ -46,7 +53,7 @@ public class Main {
 		}
 		// Spawn server
 		System.setProperty("java.net.preferIPv4Stack", "true");	// prefer IPv4 addressing
-		new Server(port, path, debug);
+		new Server(port,sslport,path, debug);
 	}
 
 }

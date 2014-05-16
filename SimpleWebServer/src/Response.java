@@ -33,6 +33,7 @@ public class Response {
 			String key = response.Cookies.keySet().iterator().next();
 			String value = response.Cookies.get(key);
 			Integer count = Integer.parseInt(value) + 1;
+			s.logMessage("\nClient has now requested " + count + " pages from the server.\n");
 			response.Cookies.put(key, count.toString());
 		}
 		else {
