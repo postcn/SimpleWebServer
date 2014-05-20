@@ -98,7 +98,7 @@ public class Request {
 		return header;
 	}
 	
-	public String getFullHeader() {
+	public String getFullHeader() throws AccessDeniedException {
 		return getCommonHeader();
 	}
 	

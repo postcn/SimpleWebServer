@@ -1,7 +1,7 @@
 
 
 
-public class GetRequest extends Request throws AccessDeniedException {
+public class GetRequest extends Request {
 	
 	String resourcePath;
 
@@ -10,8 +10,11 @@ public class GetRequest extends Request throws AccessDeniedException {
 	}
 
 	@Override
-	public String getFullHeader() {
-		return "GET " + resourcePath + " HTTP/1.1" + Constants.NEWLINE + super.getCommonHeader();
+	public String getFullHeader() throws AccessDeniedException {
+		if(resourcePath.contains(".htaccess"))
+			throw new AccessDeniedException();
+		else
+			return "GET " + resourcePath + " HTTP/1.1" + Constants.NEWLINE + super.getCommonHeader();
 	}
 	
 }

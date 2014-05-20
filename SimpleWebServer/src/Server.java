@@ -3,9 +3,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.net.InetAddress;
-import java.net.ServerSocket;
-import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -68,6 +65,7 @@ public class Server {
 				if(address.equalsIgnoreCase("Deny from all")){
 					break;
 				}
+				System.out.println(address);
 				whiteList.add(address);
 				address = reader.readLine();
 			}

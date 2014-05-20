@@ -47,6 +47,9 @@ public class ConnectionHandler implements Runnable {
 	    			output.write(ErrorMessage404.getError().getBytes());
 
 	    		output.flush();
+	    	} catch (AccessDeniedException e){
+	    		error = ErrorMessage403.getError();
+	    		e.printStackTrace();
 	    	} catch (SocketException e) {
 	    		//client closed connection or the socket is unexpectedly closed.
 	    		try {
