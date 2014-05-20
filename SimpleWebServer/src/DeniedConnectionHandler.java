@@ -44,9 +44,10 @@ public class DeniedConnectionHandler implements Runnable {
 
 	    try {
 	    	server.logMessage("Closing Socket...");
+	    	Thread.sleep(1000);
 			socket.close();
 			server.logMessage("... socket closed.");
-		} catch (IOException e) {
+		} catch (IOException | InterruptedException e) {
 			e.printStackTrace();
 		}
 	}
