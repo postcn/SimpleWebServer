@@ -11,6 +11,7 @@ public class Request {
 	protected String UserAgent; //The user agent string of the user agent
 	protected String Connection; //What type of connection the user-agent would prefer
 	protected String Accept; //Content-Types that are acceptable for Response
+	protected String Language; //Language that is acceptable for Response
 	protected HashMap<String, String> Cookies;
 	
 	public static Request parseRequest(InputStream in, Server s) throws DetailException, MalformedHeaderException, SocketClosedException, IOException {
@@ -68,6 +69,9 @@ public class Request {
 				else if (headerType.equals(Constants.ACCEPT_HEADER_LINE)) {
 					this.Accept = headerValue;
 				}
+				else if (headerType.equals(Constants.ACCEPT_LANGUAGE_LINE)){
+					this.Language = headerValue;
+				} 
 				else if (headerType.equals(Constants.COOKIE_HEADER_LINE)) {
 					//parse the cookies.
 					for (String cookie: headerValue.split(Constants.COOKIE_SEPERATOR)) {
@@ -87,6 +91,7 @@ public class Request {
 		String header = Constants.USER_AGENT_HEADER_LINE + Constants.SPLIT + this.UserAgent + Constants.NEWLINE;
 		header += Constants.HOST_HEADER_LINE + Constants.SPLIT + this.Host + Constants.NEWLINE;
 		header += Constants.ACCEPT_HEADER_LINE + Constants.SPLIT + this.Accept + Constants.NEWLINE;
+		header += Constants.ACCEPT_LANGUAGE_LINE + Constants.SPLIT + this.Language + Constants.NEWLINE;
 		header += Constants.CONNECTION_HEADER_LINE + Constants.SPLIT + this.Connection + Constants.NEWLINE;
 		if (this.Cookies.keySet().size() > 0) {
 			header += Constants.COOKIE_HEADER_LINE + Constants.SPLIT;

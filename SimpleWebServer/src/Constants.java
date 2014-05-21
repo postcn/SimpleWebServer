@@ -5,6 +5,7 @@ public abstract class Constants {
 	public final static String NEWLINE = "\r\n";
 	public final static String DATE_HEADER_LINE = "Date";
 	public final static String ACCEPT_HEADER_LINE = "Accept";
+	public final static String ACCEPT_LANGUAGE_LINE = "Accept-Language";
 	public final static String CONNECTION_HEADER_LINE = "Connection";
 	public final static String USER_AGENT_HEADER_LINE = "User-Agent";
 	public final static String HOST_HEADER_LINE = "Host";

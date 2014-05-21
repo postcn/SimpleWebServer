@@ -7,6 +7,7 @@ public class GetRequest extends Request {
 
 	public GetRequest(String firstHeader) {
 		this.resourcePath = firstHeader.split(" ")[1];
+		System.out.println(this.resourcePath + "\n");
 	}
 
 	@Override
