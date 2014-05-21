@@ -1,0 +1,23 @@
+<html>
+<head>
+<script type='text/javascript'>
+	function listCookies() {
+	    var theCookies = document.cookie.split(';');
+	    var aString = '';
+	    for (var i = 0 ; i < theCookies.length; i++) {
+	        aString += theCookies[i] + "\n";
+	    }
+	    return aString;
+	}
+	
+	function go(){
+		document.getElementById('topCookie').innerHTML = listCookies();
+	}
+</script>
+<title>Cookie Jar</title>
+</head>
+<body onload='go()'>
+<br /><br /><br /><br />
+<h2 id='topCookie' style='text-align: center;'></h2>
+</body>
+</html>
