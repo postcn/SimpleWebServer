@@ -26,6 +26,9 @@ public class Response {
 		else if (r.getClass().equals(HeadRequest.class)) {
 			response = new ResponseHead((HeadRequest)r);
 		}
+		else if (r.getClass().equals(PostRequest.class)){
+			response = new ResponsePost((PostRequest)r);
+		}
 		
 		if (r.Cookies.keySet().size() > 0) {
 			response.Cookies = r.Cookies;

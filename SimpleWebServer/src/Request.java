@@ -2,6 +2,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 
@@ -13,6 +14,7 @@ public class Request {
 	protected String Accept; //Content-Types that are acceptable for Response
 	protected String Language; //Language that is acceptable for Response
 	protected HashMap<String, String> Cookies;
+	protected ArrayList<String> skippedHeaderLines;
 	
 	public static Request parseRequest(InputStream in, Server s) throws DetailException, MalformedHeaderException, SocketClosedException, IOException {
 		BufferedReader reader = new BufferedReader(new InputStreamReader(in));
@@ -33,7 +35,7 @@ public class Request {
 			if (Main.failFlag == 1) {
 				throw new IOException();
 			}
-			r = new PostRequest();
+			r = new PostRequest(typeLine);
 		}
 		else {
 			throw new DetailException("Request type not supported");
@@ -46,6 +48,7 @@ public class Request {
 
 	protected void fillHeaderFields(BufferedReader reader) throws MalformedHeaderException {
 		Cookies = new HashMap<String, String>();
+		skippedHeaderLines = new ArrayList<String>();
 		try {
 			String line = reader.readLine();
 			while (!line.equals("")) {
@@ -79,6 +82,9 @@ public class Request {
 						String value = cookie.split(Constants.COOKIE_VALUE_SEPERATOR)[1];
 						this.Cookies.put(key, value);
 					}
+				}
+				else {
+					skippedHeaderLines.add(line);
 				}
 				line = reader.readLine();
 			}
