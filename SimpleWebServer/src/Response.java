@@ -31,13 +31,19 @@ public class Response {
 		}
 		
 		if (r.Cookies.keySet().size() > 0) {
-			response.Cookies = r.Cookies;
 			//add one to the cookie for a proper request.
-			String key = response.Cookies.keySet().iterator().next();
-			String value = response.Cookies.get(key);
-			Integer count = Integer.parseInt(value) + 1;
-			s.logMessage("\nClient has now requested " + count + " pages from the server.\n");
-			response.Cookies.put(key, count.toString());
+			String key = r.Cookies.keySet().iterator().next();
+			String value = r.Cookies.get(key);
+			try {
+				Integer count = Integer.parseInt(value) + 1;
+				s.logMessage("\nClient has now requested " + count + " pages from the server.\n");
+				response.Cookies = new HashMap<String, String>();
+				response.Cookies.put(key, count.toString());
+			} catch (NumberFormatException e) {
+				if (s.getDebug()) {
+					System.out.println("Issues incrementing cookie value '" + value + "'");
+				}
+			}
 		}
 		else {
 			response.Cookies = new HashMap<String, String>();
@@ -94,9 +100,11 @@ public class Response {
 			s += Constants.CONTENT_TYPE_HEADER_LINE + Constants.SPLIT + this.ContentType + Constants.NEWLINE;
 			s += Constants.CONTENT_LENGTH_HEADER_LINE + Constants.SPLIT + this.ContentLength + Constants.NEWLINE;
 		}
-		for (String key: Cookies.keySet()) {
-			String value = Cookies.get(key);
-			s += Constants.SET_COOKIE_HEADER_LINE + Constants.SPLIT + key + Constants.COOKIE_VALUE_SEPERATOR + value + Constants.COOKIE_SEPERATOR + Constants.EXPIRES + getCookieExpiration() + Constants.NEWLINE; 
+		if (Cookies != null) {
+			for (String key: Cookies.keySet()) {
+				String value = Cookies.get(key);
+				s += Constants.SET_COOKIE_HEADER_LINE + Constants.SPLIT + key + Constants.COOKIE_VALUE_SEPERATOR + value + Constants.COOKIE_SEPERATOR + Constants.EXPIRES + getCookieExpiration() + Constants.NEWLINE; 
+			}
 		}
 		s += Constants.NEWLINE;
 		return s;
