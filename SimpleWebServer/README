@@ -15,6 +15,9 @@ How to Run the Server (in Linux)
 
 -Run the bash script 'RUN.sh'
 
+Troubleshooting:
+-To clean out the compiled files from the src folder run the 'clean.sh' script.
+
 ========
 Notable Features:
 -Support Multiple Connections
