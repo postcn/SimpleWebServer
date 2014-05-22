@@ -19,7 +19,9 @@ How to Run the Server (in Linux)
 Notable Features:
 -Support Multiple Connections
 -GET and HEAD requests for any content types.
--200, 301, 400, 404, 500, 501 error codes.
+-POST requests for form data, saved as text
+-200, 301, 400, 403, 404, 406, 500, 501 error codes.
+-Cookies and Accept-Language headers are supported
 
 Security Component:
 Implemented a white-list (".htaccess"). If an IP is listed in the white-list, all connections from that IP will be allowed. Otherwise, any connection from any other IP will be rejected.*
@@ -30,13 +32,21 @@ Implemented HTTP cookies. When a client connects to the web-server they are give
 *More details and a thorough explanation can be found in the Design Documentation in the Documentation folder.
 
 Testing:
--Run bash script to launch server with default configuration.
--Request in browser localhost:8000/HM1.jpg
--Request using POSTMAN extension for Chrome HEAD same file.
+-Run the bash script to launch the server with the default configuration.
+-Request, in a web browser localhost:8000/HM1.jpg
+-Request, using the POSTMAN extension for Chrome, HEAD on the same file.
 -To get 500 Error launch Main with flag -failPostTo500 and make POST request to server
 -To get 301 redirect specify a url with droids/ in the name as a directory. This will redirect to the droids image.
 -To get 400 use utility to send malformed request.
 -To get 404 request file not in www directory.
--To get 501 use POSTMAN to send request not GET or HEAD
+-To get 501 use POSTMAN Google Chrome extension to send a request that is not GET or HEAD
+-To get 403, make a request in a web browser for localhost:8000/.htaccess
+-To get 406, use POSTMAN to send a GET request for an image file, and alter the request header so that only text/html files are acceptable
 
 -To test the multiple connections functionality, it is a bit more difficult. You must have multiple computers making requests simultaneously to server. This can be seen in the console output. With what is being requested by each user.
+
+-To test the security component, insert the localhost address of 127.0.0.1 into a line in the .htaccess file in the www folder. Run the server. Attempt to navigate to a page on the server and no error should appear. Access the server from another machine, or remove 127.0.0.1 from the whitelist, and a 403 error should be produced.
+
+-To test the stateful component, navigate to a page on the server and look at the cookies in the web browser. Navigate to another page (or file) and look at the updated value of the cookie in the browser. To look at cookie values in Google Chrome press F12, click on the Resources tab, expand the 'cookies' section in the left-hand panel, click on the domain that corresponds to the current address of the running server.
+
+-To test the Accept-Language header: use POSTMAN to request localhost:8000/test.html. Add the 'Accept-Language' header in POSTMAN and give it the value of any of the following: 'fr', 'de', 'es', 'ru', 'zh-hans'; these will request the French, German, Spanish, Russian (phonetic), or Simplified Chinese versions of the file, respectively.
