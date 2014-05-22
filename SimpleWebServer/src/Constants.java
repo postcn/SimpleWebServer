@@ -1,6 +1,7 @@
 
 public abstract class Constants {
 	public final static String SERVER_NAME = "Dovie'andi se tovya sagain";
+	public final static int DEFAULT_TIMEOUT = 15000;
 	
 	public final static String NEWLINE = "\r\n";
 	public final static String DATE_HEADER_LINE = "Date";
