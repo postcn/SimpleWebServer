@@ -121,6 +121,9 @@ public class Request {
 				}
 				line = reader.readLine();
 			}
+			if (this.Host == null) {
+				throw new MalformedHeaderException();
+			}
 		} catch (IOException e) {
 			this.server.logMessage(e.getMessage());
 		}
