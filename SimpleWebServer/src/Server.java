@@ -11,6 +11,7 @@ public class Server {
 	private boolean debug;
 	private String path;
 	private ConnectionAccepter accepter;
+	@SuppressWarnings("unused")
 	private SSLConnectionAccepter sslaccepter;
 	public ArrayList<String> movedDirectories = new ArrayList<String>();
 	public ArrayList<String> whiteList = new ArrayList<String>();
@@ -19,7 +20,7 @@ public class Server {
 	public Server(int port, int sslport,String path, boolean debug) {
 		this.debug = debug;
 		this.accepter = new ConnectionAccepter(this, port);
-		this.sslaccepter = new SSLConnectionAccepter(this, sslport);
+//		this.sslaccepter = new SSLConnectionAccepter(this, sslport);
 		if (path != null) {
 			this.path = path;
 		}
@@ -65,7 +66,6 @@ public class Server {
 				if(address.equalsIgnoreCase("Deny from all")){
 					break;
 				}
-				System.out.println(address);
 				whiteList.add(address);
 				address = reader.readLine();
 			}
@@ -101,7 +101,7 @@ public class Server {
 	
 	public void handleConnections() {
 		new Thread(accepter).run();
-		new Thread(sslaccepter).run();
+//		new Thread(sslaccepter).run();
 	}
 	
 	public String getPath() {

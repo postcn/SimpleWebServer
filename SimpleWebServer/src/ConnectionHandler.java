@@ -4,6 +4,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
 import java.net.SocketException;
+import java.net.SocketTimeoutException;
 
 
 public class ConnectionHandler implements Runnable {
@@ -41,7 +42,7 @@ public class ConnectionHandler implements Runnable {
 	    		server.logMessage(r.getFullHeader());
 	    		Response resp = Response.parseResponse(r, this.server);
 	    		if (resp.getResource()) {
-	    			server.logMessage(resp.getResponse().toString());
+	    			server.logMessage(resp.getCommonHeader());
 	    			output.write(resp.getResponse());
 	    		}else
 	    			output.write(ErrorMessage404.getError().getBytes());
@@ -59,6 +60,13 @@ public class ConnectionHandler implements Runnable {
 					e1.printStackTrace();
 				}
 	    		break;
+	    	} catch (SocketTimeoutException e){
+	    		try {
+					socket.close();
+					server.logMessage("Socket timeout. Socket closed.");
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
 	    	} catch (IOException e) {
 	    		error = ErrorMessage500.getError();
 	    		e.printStackTrace();
@@ -95,7 +103,6 @@ public class ConnectionHandler implements Runnable {
 				server.logMessage("Closing Socket");
 			}
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
