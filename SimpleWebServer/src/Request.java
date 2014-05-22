@@ -15,6 +15,7 @@ public class Request {
 	protected String Language; //Language that is acceptable for Response
 	protected HashMap<String, String> Cookies;
 	protected ArrayList<String> skippedHeaderLines;
+	String resourcePath;
 	
 	public static Request parseRequest(InputStream in, Server s) throws DetailException, MalformedHeaderException, SocketClosedException, IOException {
 		BufferedReader reader = new BufferedReader(new InputStreamReader(in));
@@ -43,7 +44,39 @@ public class Request {
 		r.server = s;
 		r.fillHeaderFields(reader);
 		
+		// Localization (only works for HTML files)
+		if ((ForeignFiles.french.contains(r.resourcePath)) && (r.Language.equals("fr")))
+			r.resourcePath = appendFr(r.resourcePath);
+		else if ((ForeignFiles.spanish.contains(r.resourcePath)) && (r.Language.equals("es")))
+			r.resourcePath = appendEs(r.resourcePath);
+		else if ((ForeignFiles.german.contains(r.resourcePath)) && (r.Language.equals("de")))
+			r.resourcePath = appendDe(r.resourcePath);
+		else if ((ForeignFiles.russian.contains(r.resourcePath)) && (r.Language.equals("ru")))
+			r.resourcePath = appendRu(r.resourcePath);
+		else if ((ForeignFiles.chineseSimplified.contains(r.resourcePath)) && (r.Language.equalsIgnoreCase("zh-Hans")))
+			r.resourcePath = appendZh_Hans(r.resourcePath);
+		
 		return r;
+	}
+	
+	public static String appendFr(String s){
+		return s.replace(".html", "_fr.html");
+	}
+	
+	public static String appendDe(String s){
+		return s.replace(".html", "_de.html");
+	}
+	
+	public static String appendEs(String s){
+		return s.replace(".html", "_es.html");
+	}
+	
+	public static String appendRu(String s){
+		return s.replace(".html", "_ru.html");
+	}
+	
+	public static String appendZh_Hans(String s){
+		return s.replace(".html", "_zh-Hans.html");
 	}
 
 	protected void fillHeaderFields(BufferedReader reader) throws MalformedHeaderException {
