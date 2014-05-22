@@ -13,7 +13,7 @@ public class ConnectionAccepter implements Runnable {
 		try {
 			s.logMessage("Trying to bind to localhost on port " + port + "...");
 			socket = new ServerSocket(port);
-			socket.setSoTimeout(Constants.DEFAULT_TIMEOUT);
+//			socket.setSoTimeout(Constants.DEFAULT_TIMEOUT);		SOMETHING'S WRONG HERE
 		}
 		catch (Exception e) {
 			s.logMessage("Fatal error occurred when trying to create server socket");
@@ -28,7 +28,7 @@ public class ConnectionAccepter implements Runnable {
 			try {
 				Socket connect = this.socket.accept();
 				connect.setKeepAlive(true);
-				connect.setSoTimeout(Constants.DEFAULT_TIMEOUT);
+//				connect.setSoTimeout(Constants.DEFAULT_TIMEOUT); I DON'T THINK THIS IS CORRECT
 				InetAddress client = connect.getInetAddress();
 				if (s.whiteList.contains(client.getHostAddress())) {
 					s.logMessage("Client "+client.getHostName() + " connected to server.");

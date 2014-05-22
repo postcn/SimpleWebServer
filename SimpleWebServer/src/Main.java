@@ -14,7 +14,7 @@ public class Main {
 		// initialize flags for parsing
 		int pFlag = 0, rFlag = 0, sFlag = 0;
 
-		// intialize server defaults
+		// Initialize server defaults
 		int port = DEFAULT_PORT;
 		int sslport = DEFAULT_SSL_PORT;
 		String path = null;

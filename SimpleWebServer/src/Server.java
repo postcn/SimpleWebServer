@@ -27,8 +27,8 @@ public class Server {
 			this.path = System.getProperty("user.dir") +File.separator +"www";
 		}
 		logMessage("Server running with root directory " + this.path);
-		loadMoved();
-		loadWhiteList();
+		loadMoved(); // load list of files that have moved from their original location
+		loadWhiteList(); // load list of allowed IPs
 		loadCookies();
 		handleConnections();
 	}
