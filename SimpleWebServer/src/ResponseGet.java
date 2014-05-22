@@ -10,7 +10,7 @@ public class ResponseGet extends Response {
 		this.localDir = r.resourcePath.replace("/", File.separator);
 	}
 	
-	public boolean getResource() throws FileMovedException {
+	public boolean getResource() throws FileMovedException, FileNotAcceptedException {
 		String fullDir = super.server.getPath() + localDir;
 		byte[] load = null;
 		super.server.logMessage("Client Requested Resource at "+fullDir);
@@ -30,7 +30,14 @@ public class ResponseGet extends Response {
 				super.server.logMessage("Requested an unknown file type");
 			}
 			super.server.logMessage("Requested content was identified as "+content);
+			if (this.accepts != null && content != null &&!this.accepts.contains(content) && !this.accepts.contains(Constants.ACCEPT_ALL)) {
+				super.server.logMessage("Client does not accept content type.");
+				throw new FileNotAcceptedException();
+			}
 			super.setContent(load, content);
+		}
+		catch(FileNotAcceptedException e) {
+			throw e;
 		}
 		catch(Exception e) {
 			super.server.logMessage(e.getMessage());

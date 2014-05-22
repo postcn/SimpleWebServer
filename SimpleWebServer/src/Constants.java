@@ -19,4 +19,5 @@ public abstract class Constants {
 	public final static String COOKIE_VALUE_SEPERATOR = "=";
 	public final static String SET_COOKIE_HEADER_LINE = "Set-Cookie";
 	public final static String EXPIRES = "Expires=";
+	public final static String ACCEPT_ALL = "*/*";
 }

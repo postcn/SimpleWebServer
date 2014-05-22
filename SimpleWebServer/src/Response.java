@@ -17,6 +17,8 @@ public class Response {
 	private HashMap<String, String> Cookies;
 	private byte[] dataLoad;
 	
+	protected String accepts;
+	
 	public static Response parseResponse(Request r, Server s) {
 		Response response = null;
 		
@@ -51,6 +53,7 @@ public class Response {
 		}
 		response.Connection = r.Connection;
 		response.server = s;
+		response.accepts = r.Accept;
 		return response;
 	}
 	
@@ -115,7 +118,7 @@ public class Response {
 		return s.getBytes();
 	}
 	
-	public boolean getResource() throws FileMovedException {
+	public boolean getResource() throws FileMovedException, FileNotAcceptedException {
 		return false;
 	}
 

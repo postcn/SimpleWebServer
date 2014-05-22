@@ -83,6 +83,8 @@ public class ConnectionHandler implements Runnable {
 	    	} catch (FileMovedException e) {
 	    		server.logMessage(e.getMessage());
 	    		error = ErrorMessage301.getError();	
+	    	} catch (FileNotAcceptedException e) {
+	    		error = ErrorMessage406.getError();
 	    	} catch (Exception e) {
 				error = ErrorMessage500.getError();
 	    		server.logMessage(e.getMessage());
